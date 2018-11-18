@@ -1,0 +1,66 @@
+{% extends 'dash/base.html'%}
+
+{% block content %}
+
+<div class="container left">
+    <h3>Bienvenido Donald!</h3> <br>
+   <div class="row">
+       <div class="col l3">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/220px-Donald_Trump_official_portrait.jpg" width="200" alt="ressspi">
+                           
+       </div>
+       <div class="col l9">
+           <h5>Lista de dispositivos</h5>
+           <br>
+
+            
+        
+           <div class="row">
+               <div class="col l4">
+                   <b>Dispositivo 1:</b>  Caja  
+               </div>
+               <div class="col l4">
+                   Descripción: Caja con cosas
+               </div>
+               <div class="col l4">
+                   <a href="{% url 'dispo' %}"> {{address}}</a>
+               </div>
+           </div>
+           <br>
+           <div class="row">
+                <div class="col l4">
+                        <b>Dispositivo 2:</b> Caja grande 
+                </div>
+                <div class="col l4">
+                    Descripción: Caja con libros chungos
+                </div>
+                <div class="col l4">
+                        <a href="{% url 'dispo' %}"> {{address2}}</a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                    <div class="col l4">
+                            <b>Dispositivo 3:</b> Bici
+                    </div>
+                    <div class="col l4">
+                        Descripción: Bici de montaña antigua
+                    </div>
+                    <div class="col l4">
+                            <a href="{% url 'dispo' %}"> {{address3}}</a>
+                    </div>
+                </div>
+      
+       </div>
+</div>
+
+    
+    
+    
+    
+    
+    
+   
+</div>
+
+{% endblock %}

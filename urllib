@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Oct 27 01:02:29 2018
+
+@author: miguel
+"""
+import urllib.request
+from datetime import datetime
+
+temperature=[]
+HR=[]
+timer=[]
+ac=[]
+i=0
+#for i in range(0,4):
+with urllib.request.urlopen('https://cosasdejuan.000webhostapp.com/threeroom/api.php') as response:
+   html = response.read()
+
+#time.sleep(2)
+sensor=eval(html.decode("utf-8"))
+temperature.append(sensor["temp"])
+HR.append(sensor["hr"])
+ac.append(sensor["accel"])
+timer.append(sensor["unix"])
+i=i+1
+
+HR_lim_max=100
+HR_lim_min=0
+
+temp_lim_max=50
+temp_lim_min=-20
+
+ac_lim_max=8
+ac_lim_min=0
+
+incumplimiento=0
+if max(temperature[0])>temp_lim_max:
+    incumplimiento=1
+if min(temperature[0])<temp_lim_min:
+    incumplimiento=1
+if max(HR[0])>HR_lim_max:
+    incumplimiento=1
+if min(HR[0])<HR_lim_min:
+    incumplimiento=1
+if max(ac[0])>ac_lim_max:
+    incumplimiento=1
+if min(ac[0])<ac_lim_min:
+    incumplimiento=1
+
+print(datetime.utcfromtimestamp(timer[0][1]).strftime('%Y-%m-%d %H:%M:%S'))

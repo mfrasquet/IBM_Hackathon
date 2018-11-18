@@ -1,0 +1,32 @@
+{% extends 'dash/base.html'%}
+
+{% block content %}
+
+<div class="container center">
+   <div class="row">
+    <h1>The 3 <sup>rd</sup> Room </h1> <h3>Trasteros como en tu casa!</h3>
+</div>
+<div class="row">
+    <div class="col l4">
+    </div>
+    <div class="col l4">
+            <div class="card-panel">
+            <form method="POST">
+                    {% csrf_token %}
+                    <span class="red-text">{{form.non_field_errors}}</span>
+                    <input name="username" placeholder="Name">
+                    
+                    <input name="password" placeholder="Password" type="Password">
+                    
+                    
+            </form>
+            <br>
+            <a onclick="window.location='index'" class="waves-effect waves-light btn-large">ENTRAR</a>
+              </div>     
+    </div>
+    <div class="col l4">
+    </div>
+</div>
+
+
+{% endblock %}

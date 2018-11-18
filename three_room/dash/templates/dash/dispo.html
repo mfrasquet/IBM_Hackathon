@@ -1,0 +1,35 @@
+{% extends 'dash/base.html'%}
+
+{% block content %}
+<div class="row">
+    <br>
+</div>
+    <div class="row">
+        <div class="col l4">
+                <h3>Dispositivo 3: Bici</h3>
+        </div>
+        <div class="col l8">
+                Inclumplimientos: {{incumplimiento}} ->> <a href="{{url_txt}}" target="_blank">
+                    {% if url_txt == "" %}
+                    {% else %}
+                    {{date_for_plot}} Ver en Rinkeby Explorer
+                    {% endif %}</a>  
+        </div>
+    </div>
+
+
+        
+    <div class="row">
+        <div class="col l6">
+                <img src="data:image/png;base64, {{ image_base64 }}"  width="100%" alt="somealt" />
+        </div>
+        <div class="col l6">
+                <img src="data:image/png;base64, {{ image_base64_2 }}" width="100%" alt="somealt" />
+        </div>
+        
+    </div>
+    
+    
+
+
+{% endblock %}
