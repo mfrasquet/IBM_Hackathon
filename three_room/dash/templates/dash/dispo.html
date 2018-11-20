@@ -6,14 +6,17 @@
 </div>
     <div class="row">
         <div class="col l4">
-                <h3>Dispositivo 3: Bici</h3>
+                <h3>Dispositivo {{entry.id}}: {{entry.title}}</h3>
         </div>
         <div class="col l8">
                 Inclumplimientos: {{incumplimiento}} ->> <a href="{{url_txt}}" target="_blank">
                     {% if url_txt == "" %}
                     {% else %}
-                    {{date_for_plot}} Ver en Rinkeby Explorer
-                    {% endif %}</a>  
+                    Ver en Rinkeby Explorer</a> 
+                    <br>
+                    {{incumplimientos}}
+                    {% endif %}
+                     
         </div>
     </div>
 

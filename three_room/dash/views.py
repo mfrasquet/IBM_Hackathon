@@ -9,6 +9,8 @@ import json
 import web3
 from web3 import Web3, IPCProvider
 
+from .models import Contract
+
 
 from datetime import datetime
 
@@ -17,12 +19,14 @@ import urllib.request
 from web3 import Web3, HTTPProvider, TestRPCProvider
 from web3.middleware import geth_poa_middleware
 
-w3 = Web3(IPCProvider('/home/miguel/rinkeby/geth.ipc'))
-w3.middleware_stack.inject(geth_poa_middleware, layer=0)
+#w3 = Web3(IPCProvider('/home/miguel/rinkeby/geth.ipc'))
+w3 = Web3(HTTPProvider('https://rinkeby.infura.io/v3/4f76921d343748539da91921c5480804'))
 
-admin=w3.eth.accounts[1]
-otro=w3.eth.accounts[0]
-otro2=w3.eth.accounts[2]
+#w3.middleware_stack.inject(geth_poa_middleware, layer=0)
+
+#admin=w3.eth.accounts[1]
+#otro=w3.eth.accounts[0]
+#otro2=w3.eth.accounts[2]
 
 def bytes2hex(bytes):
     return '0x'+''.join('{:x}'.format(b) for b in bytes)
@@ -36,32 +40,20 @@ def portada(request):
 
 def index(request):
 
-    #w3 = Web3(HTTPProvider('http://localhost:8545'))
+    entries=Contract.objects.filter(author=request.user)
+    print(entries)
+
+    return render(request, 'dash/index.html', {'entries':entries,'address':'45','address2':'otro','address3':'otro2',})
 
 
+def dispo(request,pk):
+    entry=Contract.objects.get(id=pk)
+    paramContract=Contract.objects.get(id=pk)
 
-    w3.personal.unlockAccount(admin, 'lagruesa',4000)
+    account1='0xacE403ea60618f6Db0293ddDECcfabc60C699b81'
+    account2='0xFbCa81d3f8a97e55ECE7F3aE76DE9aA911226f93'
 
-    word = 'Hola Juan'
-    word_bytes = word.encode('utf-8')
-    messg=bytes2hex(word.encode('utf-8'))
-
-
-    #print(w3.eth.getBalance(admin))
-    #w3.eth.sendTransaction({'to':otro, 'from':admin, 'value': 12345, 'data':messg})
-    #print(w3.eth.getBalance(admin))
-
-    """
-    This is an example script from the Matplotlib website, just to show 
-    a working sample >>>
-    """
-    
-
-    return render(request, 'dash/index.html', {'address':admin,'address2':otro,'address3':otro2,})
-
-
-def dispo(request):
-
+    realdata=[]
     temperature=[]
     HR=[]
     ac=[]
@@ -71,7 +63,12 @@ def dispo(request):
     with urllib.request.urlopen('https://cosasdejuan.000webhostapp.com/threeroom/api.php') as response:
         html = response.read()
 #
-    sensor=eval(html.decode("utf-8"))
+    try:
+        sensor=eval(html.decode("utf-8"))
+    except:
+        return HttpResponseRedirect('/index')
+
+    realdata.append(sensor["realdata"])
     temperature.append(sensor["temp"])
     HR.append(sensor["hum"])
     ac.append(sensor["accel"])
@@ -79,37 +76,27 @@ def dispo(request):
 
 
 
-    HR_lim_max=70
-    HR_lim_min=40
+    HR_lim_max=paramContract.hrMAX
+    HR_lim_min=paramContract.hrMIN
 
-    temp_lim_max=30
-    temp_lim_min=5
+    temp_lim_max=paramContract.tempMAX
+    temp_lim_min=paramContract.tempMIN
 
-    ac_lim_max=2
-    ac_lim_min=.5
+    ac_lim_max=paramContract.accMAX
+    ac_lim_min=paramContract.accMIN
 
-    incumplimiento=0
-    if max(temperature[0])>temp_lim_max:
-        incumplimiento=1
-        incum=temperature[0].index(max(temperature[0]))
-    if min(temperature[0])<temp_lim_min:
-        incumplimiento=1
-        incum=temperature[0].index(min(temperature[0]))
-    if max(HR[0])>HR_lim_max:
-        incumplimiento=1
-        incum=HR[0].index(max(HR[0]))
-    if min(HR[0])<HR_lim_min:
-        incumplimiento=1
-        incum=HR[0].index(min(HR[0]))
-    if max(ac[0])>ac_lim_max:
-        incumplimiento=1
-        incum=ac[0].index(max(ac[0]))
-    if min(ac[0])<ac_lim_min:
-        incumplimiento=1
-        incum=ac[0].index(min(ac[0]))
-    
-    incum=temperature[0].index(max(temperature[0]))
+   #Incumplimientos por exceso de HR:
+    hrMAX_incump=[('HR_max',datetime.utcfromtimestamp(unix[0][i]).strftime('%Y-%m-%d %H:%M:%S'),x) for (i,x) in enumerate(HR[0]) if x>HR_lim_max]
+    hrMIN_incump=[('HR_min',datetime.utcfromtimestamp(unix[0][i]).strftime('%Y-%m-%d %H:%M:%S'),x) for (i,x) in enumerate(HR[0]) if x<HR_lim_min]
 
+    tempMAX_incump=[('temp_max',datetime.utcfromtimestamp(unix[0][i]).strftime('%Y-%m-%d %H:%M:%S'),x) for (i,x) in enumerate(temperature[0]) if x>temp_lim_max]
+    tempMIN_incump=[('temp_min',datetime.utcfromtimestamp(unix[0][i]).strftime('%Y-%m-%d %H:%M:%S'),x) for (i,x) in enumerate(temperature[0]) if x<temp_lim_min]
+
+    accMAX_incump=[('acc_max',datetime.utcfromtimestamp(unix[0][i]).strftime('%Y-%m-%d %H:%M:%S'),x) for (i,x) in enumerate(ac[0]) if x>ac_lim_max]
+    accMIN_incump=[('acc_min',datetime.utcfromtimestamp(unix[0][i]).strftime('%Y-%m-%d %H:%M:%S'),x) for (i,x) in enumerate(ac[0]) if x<ac_lim_min]
+
+    incumplimientos={'HR_max':hrMAX_incump,'HR_min':hrMIN_incump,'temp_max':tempMAX_incump,'temp_min':tempMIN_incump,'acc_max':accMAX_incump,'acc_min':accMIN_incump}
+    num_incumplimiento=len(hrMAX_incump)+len(hrMIN_incump)+len(tempMAX_incump)+len(tempMIN_incump)+len(accMAX_incump)+len(accMIN_incump)
 
     """
     This is an example script from the Matplotlib website, just to show 
@@ -186,21 +173,30 @@ def dispo(request):
     """
     
     url_txt=""
-    date_for_plot=""
-    if incumplimiento==1:
-        date_for_plot=(datetime.utcfromtimestamp(unix[0][incum]).strftime('%Y-%m-%d %H:%M:%S'))
-        datetime.utcfromtimestamp(unix[0][1]).strftime('%Y-%m-%d %H:%M:%S')
-        w3.personal.unlockAccount(admin, 'lagruesa',4000)
+    if num_incumplimiento>=1:
+       # datetime.utcfromtimestamp(unix[0][1]).strftime('%Y-%m-%d %H:%M:%S')
+        #w3.personal.unlockAccount(admin, 'lagruesa',4000)
 
-        word = 'incumplimiento en' +str(date_for_plot)
+        word = str(incumplimientos)
         word_bytes = word.encode('utf-8')
         messg=bytes2hex(word.encode('utf-8'))
 
-        aa=w3.eth.sendTransaction({'to':otro, 'from':admin, 'value': 12345, 'data':messg})
+        signed_txn = w3.eth.account.signTransaction(dict(
+            nonce=w3.eth.getTransactionCount(account1),
+            gasPrice = w3.eth.gasPrice, 
+            gas = 1000000,
+            data=messg,
+            to='0xFbCa81d3f8a97e55ECE7F3aE76DE9aA911226f93',
+            value=w3.toWei(0.00000005,'ether')
+        ),'0x348ce564d427a3111b6536bbcff9390d69395b06ed6c486954e971d960fe8709')
+
+        aa=w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+
+        #aa=w3.eth.sendTransaction({'to':otro, 'from':admin, 'value': 12345, 'data':messg})
         bb=w3.toBytes(aa)
         tx=w3.toHex(bb)
         url_txt='https://rinkeby.etherscan.io/tx/'+str(tx)
   
 
 
-    return render(request, 'dash/dispo.html', {'date_for_plot':date_for_plot,'url_txt':url_txt,'incumplimiento':incumplimiento,'image_base64':image_base64,'image_base64_2':image_base64_2,})
+    return render(request, 'dash/dispo.html', {'entry':entry,'url_txt':url_txt,'incumplimiento':num_incumplimiento,'incumplimientos':incumplimientos,'image_base64':image_base64,'image_base64_2':image_base64_2,})

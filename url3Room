@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Nov 20 23:03:12 2018
+
+@author: miguel
+"""
+from datetime import datetime
+import urllib.request
+
+with urllib.request.urlopen('https://cosasdejuan.000webhostapp.com/threeroom/api.php') as response:
+        html = response.read()
+#
+        
+realdata=[]
+temperature=[]
+HR=[]
+ac=[]
+unix=[]
+   
+sensor=eval(html.decode("utf-8"))
+realdata.append(sensor["realdata"])
+temperature.append(sensor["temp"])
+HR.append(sensor["hum"])
+ac.append(sensor["accel"])
+unix.append(sensor["unix"])
+
+
+
+HR_lim_max=80
+HR_lim_min=20
+
+temp_lim_max=35
+temp_lim_min=-50
+
+ac_lim_max=50
+ac_lim_min=0
+
+#Incumplimientos por exceso de HR:
+hrMAX_incump=[('HR_lim_max',datetime.utcfromtimestamp(unix[0][i]).strftime('%Y-%m-%d %H:%M:%S'),x) for (i,x) in enumerate(HR[0]) if x>150]
+hrMIN_incump=[('HR_lim_min',datetime.utcfromtimestamp(unix[0][i]).strftime('%Y-%m-%d %H:%M:%S'),x) for (i,x) in enumerate(HR[0]) if x<40]
+
+tempMAX_incump=[('temp_lim_max',datetime.utcfromtimestamp(unix[0][i]).strftime('%Y-%m-%d %H:%M:%S'),x) for (i,x) in enumerate(temperature[0]) if x>35]
+tempMIN_incump=[('temp_lim_min',datetime.utcfromtimestamp(unix[0][i]).strftime('%Y-%m-%d %H:%M:%S'),x) for (i,x) in enumerate(temperature[0]) if x<-20]
+
+accMAX_incump=[('ac_lim_max',datetime.utcfromtimestamp(unix[0][i]).strftime('%Y-%m-%d %H:%M:%S'),x) for (i,x) in enumerate(ac[0]) if x>50]
+accMIN_incump=[('ac_lim_min',datetime.utcfromtimestamp(unix[0][i]).strftime('%Y-%m-%d %H:%M:%S'),x) for (i,x) in enumerate(ac[0]) if x<0]
+
+
