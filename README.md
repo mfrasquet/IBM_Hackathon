@@ -1,4 +1,8 @@
 Django project three_room
+
+user: miguel
+password: prueba2018
+
 Requirements:
   import numpy as np
   import matplotlib as mpl
