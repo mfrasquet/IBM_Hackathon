@@ -1,19 +1,100 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 
+
+@font-face{
+    font-family: effra;
+    src: url(../fonts/Effra_Std_Rg.ttf) format('truetype');
+}
+@font-face{
+    font-family: effra-bold;
+    src: url(../fonts/Effra_Std_bd.ttf) format('truetype');
+}
+
 /* General */
 html{
-    font-family: 'Montserrat';
-    background-color: #e7e7e7;
-    
+    font-family: effra, 'Montserrat';
+    color: #FF5B88;
+}
+#main-wrapper{
+    display: flex;
+    flex-direction: column;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+.row{display: flex;}
+.tt-up{text-transform: uppercase;}
+#site-header{padding-top: 25px;}
+#site-header .header-content{justify-content: center;}
+#site-header .title-content{max-width: 50%;}
+#site-body{
+    flex: 1;
+    background: url(../img/fondo.jpg);
+    background-position: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+#site-footer{}
+#site-title{
+    font-family: effra-bold, 'Monserrat';
+    text-align: center;
+    font-size: 64px;
+    margin: 0;
+    padding: 0;
+}
+#site-subtitle{
+    font-size: 22px;
+    text-align: center;
+    letter-spacing: 3.5px;
+    margin-top: -10px;
+    padding: 0;
+}
+#site-body #enter{justify-content: center;}
+#enter a{
+    display: block;
+    background: #8C8AB4;
+}
+/*-------Login------------------------*/
+#login{
+    justify-content: center;
+    background: transparent;
+}
+#login .login-in{max-width: 50%;}
+#login .login-in h4{text-align: center;}
+#login .login-in button{
+    display: block;
+    margin: 0 auto;
 }
 
-.bold{
-    font-weight: bold;
+/*-------Dispo---------------------------*/
+#incumplimientos{justify-content: center;}
+#incumplimientos .incumplimientos{max-width: 50%;}
+#img-incumplimientos{
+    max-width: 80%;
+    margin: 0 auto;
+    justify-content: space-around;
 }
+#img-incumplimientos img{display: block;}
 
-.row{
-    margin:0px;
+
+
+/*-------INDEX---------------------------*/
+#user-in{
+    max-width: 80%;
+    margin: 0 auto;
+    justify-content: space-between;
+}
+#user-in .user-info{
+    flex: 1;
+    margin-left: 4px;
+}
+#user-in ul{background: #cccccc;}
+#user-in ul .full{
+    width: 100%;
+    justify-content: space-around;
 }
 /* simulation list */
 
