@@ -2,34 +2,33 @@
 
 {% block content %}
 
-<div class="container center">
-    <div class="row">
-     <h1>The 3 <sup>rd</sup> Room </h1> <h3>Trasteros como en tu casa!</h3>
- </div>
-
-
-<div class="container form-group center" style="background: #ffff" id="login">
-       <h4>Login</h4>
-        <div class="row">
-            <div class="col l4"></div>
-            <div class="col l4 ">
-                <form method="POST">
-                    {% csrf_token %}
-                    <span class="red-text">{{form.non_field_errors}}</span>
-                    <input name="username" placeholder="Name">
-                    
-                    <input name="password" placeholder="Password" type="Password">
-                    
-                    <button type="submit" class="btn btn-success">Login</button>
-                    <br><br>
-
+<div id="main-wrapper">
+        <header id="site-header">
+            <div class="row header-content">
+                <div class="title-content">
+                    <h1 id="site-title">The 3rd Room</h1>
+                    <p id="site-subtitle" class="tt-up">trasteros como en tu casa</p>
+                </div>
             </div>
-            <div class="col l4">
+        </header>
+        <main id="site-body">
+            <div class="row" id="login">
+                <div class="login-in">
+                     <h4>Login</h4>                
+                    <div class="">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <span class="red-text">{{form.non_field_errors}}</span>
+                            <input name="username" placeholder="Name">                        
+                            <input name="password" placeholder="Password" type="Password">                        
+                            <button type="submit" class="btn btn-success">Login</button>
+                            <br><br>
+                    </div>                    
+                </div>      
             </div>
-            
-        </div>
-            
-    
-</div>
+        </main>
+        <footer id="site-footer">            
+        </footer>
+    </div>
 
 {% endblock %}

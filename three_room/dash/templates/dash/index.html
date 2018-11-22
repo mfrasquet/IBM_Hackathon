@@ -2,56 +2,56 @@
 
 {% block content %}
 
-<div class="container left">
-    <h3>Bienvenido {{request.user.username}}</h3> <br>
-   <div class="row">
-       <div class="col l3">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/220px-Donald_Trump_official_portrait.jpg" width="200" alt="ressspi">
-                           
-       </div>
-       <div class="col l9">
-           <h5>Lista de dispositivos</h5>
-           <br>
 
-           <div class="row">
-            <ul class="z-depth-1">
-               {% for entry in entries reversed%}
-               <li>
-                <div class="card-panel z-depth-0 simulation">
-                    <div class="row">
-                        <div class="col l2">
-                            <span class="title" style="font-size:12px;"><b>Dispositivo {{entry.id}}</b>                   </span>
-                                
-                        </div>
-                        <div class="col l3">
-                            <span class="title" style="font-size:14px;"><b> {{entry.title}}  </span>
-                        </div>
-                
-                        <div class="col l6">
-                            <span style="font-size:10px;"><b> {{entry.description}} </span>
-                        </div>
-                        <div class="col l1">
-                            <a href="{% url 'dispo' pk=entry.id %}" <i class="material-icons green-text right">play_circle_filled</i></a>
-                        </div>
-                        
-                        
-                    </div>
-                </div>
-            </li>
-               {% endfor %}
-           </ul>
+<div id="main-wrapper">
+    <header id="site-header">
+      <div class="row header-content">
+        <div class="title-content">
+          <h3>Bienvenido {{request.user.username}}</h3>
         </div>
-      
-       </div>
-</div>
+      </div>
+    </header>
+    <main id="site-body">
+      <section id="user-in" class="row">
+        <div class="user-thumb">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/220px-Donald_Trump_official_portrait.jpg" width="200" alt="ressspi">
+        </div>
+        <div class="user-info">
+          <h5>Lista de dispositivos</h5>
+            <ul class="z-depth-1">
+            {% for entry in entries reversed%}
+              <li>
+                <div class="card-panel z-depth-0 simulation">
+                  <div class="row full">
 
-    
-    
-    
-    
-    
-    
-   
-</div>
+                    <div>
+                      <span class="title" style="font-size:12px;">
+                        <b>Dispositivo {{entry.id}}</b>                   
+                      </span>
+                    </div>
+
+                    <div>
+                      <span class="title" style="font-size:14px;"><b> {{entry.title}}  </span>
+                    </div>
+
+                    <div>
+                      <span style="font-size:10px;"><b> {{entry.description}} </span>
+                    </div>
+
+                    <div>
+                      <a href="{% url 'dispo' pk=entry.id %}" <i class="material-icons green-text right">play_circle_filled</i></a>
+                    </div> 
+
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+            </ul>
+          </div>
+        </section>
+    </main>
+    <footer id="site-footer">            
+    </footer>
+  </div>
 
 {% endblock %}
