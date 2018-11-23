@@ -98,6 +98,10 @@ def dispo(request,pk):
     incumplimientos={'HR_max':hrMAX_incump,'HR_min':hrMIN_incump,'temp_max':tempMAX_incump,'temp_min':tempMIN_incump,'acc_max':accMAX_incump,'acc_min':accMIN_incump}
     num_incumplimiento=len(hrMAX_incump)+len(hrMIN_incump)+len(tempMAX_incump)+len(tempMIN_incump)+len(accMAX_incump)+len(accMIN_incump)
 
+
+
+
+
     """
     This is an example script from the Matplotlib website, just to show 
     a working sample >>>
@@ -155,7 +159,7 @@ def dispo(request,pk):
     ax1 .axhline(y=ac_lim_min,xmin=0,xmax=100,c="red",linewidth=2,zorder=0)
     ax1.set_xlabel('simulación (últimos 15 min)')
     ax1.set_ylabel('Aceleración g',color="r")
-    ax1.set_ylim([0,3])
+    ax1.set_ylim([0,4])
     plt.legend(loc='upper left', borderaxespad=0.)
   
     plt.legend(loc='upper right', borderaxespad=0.)
